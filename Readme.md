@@ -12,7 +12,7 @@ Releases can be found [here](https://github.com/greghaynes/rconwebapi/releases).
 Run the server binary:
 
 ```bash
-./rconwebapi
+./rconwebapi -host 127.0.0.1:8099
 ```
 
 
