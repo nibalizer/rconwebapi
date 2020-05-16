@@ -90,6 +90,7 @@ func (s *Server) rconHandler(w http.ResponseWriter, req *http.Request) {
 	decoder := json.NewDecoder(req.Body)
 	var reqBody rconReqBody
 	if err := decoder.Decode(&reqBody); err != nil {
+		log.Printf("Failed to parse request: %v", err)
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid Request, unable to parse request body."))
 		return
