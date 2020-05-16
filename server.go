@@ -109,6 +109,7 @@ func (s *Server) rconHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(respBody); err != nil {
+		log.Printf("Failed to serialize response: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Internal Error, failed to marshall response."))
 	}
