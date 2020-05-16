@@ -95,7 +95,12 @@ func (s *Server) rconHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	resp := s.makeRconRequest(&reqBody.RconRequest)
+	resp, err := s.makeRconRequest(&reqBody.RconRequest)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Internal Error, command failed."))
+		return
+	}
 	respBody := rconResponseBody{
 		RconResponse: rconResponse{
 			Output: resp,
@@ -108,6 +113,15 @@ func (s *Server) rconHandler(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *Server) makeRconRequest(rconReq *rconRequest) string {
-	return ""
+func (s *Server) makeRconRequest(rconReq *rconRequest) (string, error) {
+	client, err := NewRconClient(rconReq.Address, rconReq.Password)
+	if err != nil {
+		return "", err
+	}
+
+	resp, err := client.Execute(rconReq.Command)
+	if err != nil {
+		return "", err
+	}
+	return resp, nil
 }
