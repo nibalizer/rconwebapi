@@ -34,6 +34,11 @@ func (r *RconClient) Execute(command string) (string, error) {
 	return r.conn.Execute(command)
 }
 
+// Close closes the connection
+func (r *RconClient) Close() {
+	r.conn.Close()
+}
+
 func (r *RconClient) connect() error {
 	conn, err := rcon.Dial(r.address, r.password)
 	if err != nil {
